@@ -1,20 +1,17 @@
-const juan = {
-    name: "Juan",
-    age: 25,
-    approvedCourses: ["Curso1"],
-
-    addCourse(newCourse) {
-        console.log("This", this);
-        console.log("This.approvedCourses", this.approvedCourses);
-        this.approvedCourses.push(newCourse);
+obj1 = {
+    a: "a",
+    b: "b",
+    c: {
+        d: "d",
+        e: "e",
     }
-};
+}
 
-// console.log( Object.keys(juan));
-// console.log( Object.getOwnPropertyNames(juan));
-// console.log( Object.entries(juan));
+const obj2 = {};
+for (prop in obj1) {
+    obj2[prop] = obj1[prop];
+}
 
-Object.seal(juan);
-Object.freeze(juan)
+const obj3 = Object.assign({}, obj1);
 
-console.log(Object.getOwnPropertyDescriptors(juan));
+const obj4 = Object.create(obj1);
