@@ -14,29 +14,7 @@ const juan = {
 // console.log( Object.getOwnPropertyNames(juan));
 // console.log( Object.entries(juan));
 
-Object.defineProperty(juan, "navigator", {
-    value: "Chrome",
-    writable: true,
-    configurable: true,
-    enumerable: false
-});
-Object.defineProperty(juan, "editor", {
-    value: "VSCode",
-    configurable: true,
-    writable: false,
-    enumerable: true
-});
-Object.defineProperty(juan, "pruebaNasa", {
-    value: "extraterrestres",
-    enumerable: false,
-    writable: false,
-    configurable: false,
-})
-Object.defineProperty(juan, "terminal", {
-    value: "WSL",
-    enumerable: true,
-    writable: true,
-    configurable: false,
-})
+Object.seal(juan);
+Object.freeze(juan)
 
 console.log(Object.getOwnPropertyDescriptors(juan));
