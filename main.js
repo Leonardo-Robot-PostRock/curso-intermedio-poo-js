@@ -51,7 +51,7 @@ function deepCopy(subject) {
 // }
 
 function requiteParam(param) {
-    throw new Error(param +  " es obligatorio");
+    throw new Error(param + " es obligatorio");
 }
 
 function createStudent({
@@ -65,12 +65,20 @@ function createStudent({
     approvedCourses = [],
     learningPaths = [],
 } = {}) {
-    return {
-        name,
-        age,
+    const private = {
+        "_name": name,
+    };
+    const public = {
         email,
+        age,
         approvedCourses,
         learningPaths,
+        readName() {
+            return private["_name"];
+        },
+        changeName(newName) {
+            private["_name"] = newName;
+        },
         socialMedia: {
             twitter,
             instagram,
@@ -78,6 +86,21 @@ function createStudent({
             linkedin
         }
     }
+    Object.defineProperties(public, {
+        readName: {
+            configurable: false,
+            writable: false
+        },
+        changeName: {
+            configurable: false,
+            writable: false
+        }
+    })
+
+    return public;
 }
 
-const juan = createStudent({name: "Juanito", email: "juanito@example.com"})
+
+const juan = createStudent({ name: "Juanito", email: "juanito@example.com" });
+
+Object.freeze(juan, "name");
