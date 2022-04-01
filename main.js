@@ -40,33 +40,36 @@ function requiteParam(param) {
     throw new Error(param + " es obligatorio");
 }
 
-function createLearningPath({
+function LearningPath({
     name = requiteParam("name"),
     courses = []
 }) {
-    const private = {
-        "_name": name,
-        "_courses": courses,
-    }
+    this.name = name;
+    this.courses = courses;
 
-    const public = {
-        get name() {
-            return private["_name"];
-        },
-        set name(newName) {
-            if (newName.length !== 0) {
-                private["_name"] = newName;
-            } else {
-                console.warn("El nombre de la ruta debe tener almenos un carácter");
-            }
-        },
-        get courses() {
-            return private["_courses"];
-        }
-    }
+    // const private = {
+    //     "_name": name,
+    //     "_courses": courses,
+    // }
+
+    // const public = {
+    //     get name() {
+    //         return private["_name"];
+    //     },
+    //     set name(newName) {
+    //         if (newName.length !== 0) {
+    //             private["_name"] = newName;
+    //         } else {
+    //             console.warn("El nombre de la ruta debe tener almenos un carácter");
+    //         }
+    //     },
+    //     get courses() {
+    //         return private["_courses"];
+    //     }
+    // }
 }
 
-function createStudent({
+function Student({
     name = requiteParam("name"),
     email = requiteParam("email"),
     age,
@@ -77,52 +80,80 @@ function createStudent({
     approvedCourses = [],
     learningPaths = [],
 } = {}) {
-    const private = {
-        "_name": name,
-        "_learningPaths": learningPaths,
+    this.name = name;
+    this.email = email;
+    this.age = age;
+    this.approvedCourses = approvedCourses;
+    this.socialMedia = {
+        twitter,
+        facebook,
+        instagram,
+        linkedin
     };
-    const public = {
-        email,
-        age,
-        approvedCourses,
-        socialMedia: {
-            twitter,
-            instagram,
-            facebook,
-            linkedin
-        },
-        get name() {
-            return private["_name"];
-        },
-        set name(newName) {
-            if (newName.length !== 0) {
-                private["_name"] = newName;
-            } else {
-                console.warn("Tu nombre debe tener almenos un carácter");
+    if (isArray(learningPaths)) {
+        this.learningPaths = [];
+        for (learningPathIndex in learningPaths) {
+            if (learningPaths[learningPathIndex] instanceof LearningPath) {
+                this.learningPaths.push(learningPaths[learningPathIndex]);
             }
-        },
-        get learningPaths() {
-            return private["_learningPaths"];
-        },
-        set learningPaths(newLP) {
-            if (!newLP.name) {
-                console.warn("Tu LP no tiene la propiedad name");
-                return;
-            }
+        }
+    }
 
-            if (!newLP.courses) {
-                console.warn("Tu LP no tiene cursos");
-                return;
-            }
-            if (!isArray(newLP.courses)) {
-                console.warn("Tu LP no es una lista (*de cursos)");
-                return;
-            }
-            private["_learningPaths"].push(newLP);
 
-        },
-    };
-    return public;
+    //     const private = {
+    //         "_name": name,
+    //         "_learningPaths": learningPaths,
+    //     };
+    //     const public = {
+    //         email,
+    //         age,
+    //         approvedCourses,
+    //         socialMedia: {
+    //             twitter,
+    //             instagram,
+    //             facebook,
+    //             linkedin
+    //         },
+    //         get name() {
+    //             return private["_name"];
+    //         },
+    //         set name(newName) {
+    //             if (newName.length !== 0) {
+    //                 private["_name"] = newName;
+    //             } else {
+    //                 console.warn("Tu nombre debe tener almenos un carácter");
+    //             }
+    //         },
+    //         get learningPaths() {
+    //             return private["_learningPaths"];
+    //         },
+    //         set learningPaths(newLP) {
+    //             if (!newLP.name) {
+    //                 console.warn("Tu LP no tiene la propiedad name");
+    //                 return;
+    //             }
+
+    //             if (!newLP.courses) {
+    //                 console.warn("Tu LP no tiene cursos");
+    //                 return;
+    //             }
+    //             if (!isArray(newLP.courses)) {
+    //                 console.warn("Tu LP no es una lista (*de cursos)");
+    //                 return;
+    //             }
+    //             private["_learningPaths"].push(newLP);
+
+    //         },
+    //     };
+    //     return public;
 }
-
-const juan = createStudent({ name: "Juanito", email: "juanito@example.com" });
+const escuelaWeb = new LearningPath({ name: "Escuela de WebDev" });
+const escuelaData = new LearningPath({ name: "Escuela de Data Science" });
+const juan = new Student({
+    email: "juanito@example.com",
+    name: "Juanito",
+    learningPaths: [
+        escuelaWeb,
+        escuelaData,
+    ],
+});
