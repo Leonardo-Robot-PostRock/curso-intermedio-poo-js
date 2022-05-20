@@ -68,7 +68,7 @@ class Student {
             instagram,
             linkedin
         }
-        const privado = {
+        const private = {
             "_learningPaths": []
         }
         Object.defineProperty(this, "_learningPaths", {
