@@ -90,15 +90,27 @@ function Student({
         instagram,
         linkedin
     };
-    if (isArray(learningPaths)) {
-        this.learningPaths = [];
-        for (learningPathIndex in learningPaths) {
-            if (learningPaths[learningPathIndex] instanceof LearningPath) {
-                this.learningPaths.push(learningPaths[learningPathIndex]);
-            }
-        }
+
+    const private = {
+        "_learningPaths": [],
     }
 
+    Object.defineProperty(this, "learningPaths", {
+        get() {
+            return private["_learningPaths"];
+        },
+        set(newLp) {
+            if (newLp instanceof LearningPath) {
+                private["_learningPaths"].push(newLp);
+            } else {
+                console.log("Alguno de los LPs no es una instancia del prototipo LearningPath");
+            }
+        }
+
+    })
+    for (learningPathIndex in learningPaths) {
+        this.learningPaths = learningPaths[learningPathIndex]
+    }
 
     //     const private = {
     //         "_name": name,
