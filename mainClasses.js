@@ -72,7 +72,7 @@ class Student {
         }
 
         const privado = {
-            learningPaths: []
+            "_learningPaths": []
         }
         Object.defineProperty(this, "_learningPaths", {
             get() {
@@ -86,11 +86,14 @@ class Student {
                 }
             }
         })
+        for (learningPathIndex in learningPaths) {
+            this.learningPaths = learningPaths[learningPathIndex]
+        }
     }
-    get name() {
+    get() {
         return this.#name;
     }
-    set name(newName) {
+    set(newName) {
         newName.length > 0 ?
             this.#name = newName
             : console.warn("El nombre no puede estar vacio");
