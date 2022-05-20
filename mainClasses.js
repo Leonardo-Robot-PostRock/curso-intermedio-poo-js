@@ -48,6 +48,8 @@ class LearningPath {
 }
 
 class Student {
+    #name;
+    #courses;
     constructor({
         name = requiteParam("name"),
         email = requiteParam("email"),
@@ -57,8 +59,8 @@ class Student {
         instagram,
         linkedin,
         approvedCourses = [],
-    }) {
-        this.name = name;
+    } = {}) {
+        this.#name = name;
         this.email = email;
         this.age = age;
         this.approvedCourses = approvedCourses;
@@ -68,25 +70,45 @@ class Student {
             instagram,
             linkedin
         }
-        const private = {
-            "_learningPaths": []
+
+        const privado = {
+            learningPaths: []
         }
         Object.defineProperty(this, "_learningPaths", {
             get() {
-                return private["_learningPaths"];
+                return privado["_learningPaths"];
             },
-            set learningPaths(newLp) {
+            set(newLp) {
                 if (newLp instanceof LearningPath) {
-                    private["_learningPaths"].push(newLp);
+                    privado["_learningPaths"].push(newLp);
                 } else {
                     console.log("Alguno de los LPs no es una instancia del prototipo LearningPath");
                 }
             }
         })
-
     }
-};
+    get name() {
+        return this.#name;
+    }
+    set name(newName) {
+        newName.length > 0 ?
+            this.#name = newName
+            : console.warn("El nombre no puede estar vacio");
+    };
 
+    get courses() {
+        return this.#courses;
+    }
+
+    set courses(newCourses) {
+        if (!this.#courses.includes(newCourses)) {
+            this.#courses.push(newCourses)
+        } else {
+            console.warn("El curso ya ha sido agregado");
+        }
+    }
+
+}
 const escuelaWeb = new LearningPath({ name: "Escuela de WebDev" });
 const escuelaData = new LearningPath({ name: "Escuela de Data Science" });
 const juan = new Student({
@@ -95,5 +117,9 @@ const juan = new Student({
     learningPaths: [
         escuelaWeb,
         escuelaData,
+        {
+            name: "Escuela impostora"
+        }
     ],
+
 });
