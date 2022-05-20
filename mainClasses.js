@@ -57,7 +57,6 @@ class Student {
         instagram,
         linkedin,
         approvedCourses = [],
-        learningPaths = [],
     }) {
         this.name = name;
         this.email = email;
