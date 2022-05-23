@@ -50,6 +50,7 @@ class LearningPath {
 class Student {
     #name;
     #courses;
+    #learningPaths;
     constructor({
         name = requiteParam("name"),
         email = requiteParam("email"),
@@ -59,6 +60,7 @@ class Student {
         instagram,
         linkedin,
         approvedCourses = [],
+        learningPaths = []
     } = {}) {
         this.#name = name;
         this.email = email;
@@ -70,26 +72,27 @@ class Student {
             instagram,
             linkedin
         }
-
-        const privado = {
-            "_learningPaths": []
-        }
-        Object.defineProperty(this, "_learningPaths", {
-            get() {
-                return privado["_learningPaths"];
-            },
-            set(newLp) {
-                if (newLp instanceof LearningPath) {
-                    privado["_learningPaths"].push(newLp);
-                } else {
-                    console.log("Alguno de los LPs no es una instancia del prototipo LearningPath");
-                }
-            }
-        })
-        for (learningPathIndex in learningPaths) {
-            this.learningPaths = learningPaths[learningPathIndex]
+        this.#learningPaths = this.setterCall(learningPaths);
+    }
+    get learningPaths() {
+        return this.#learningPaths;
+    }
+    set learningPaths(newLp) {
+        if (newLp instanceof LearningPath) {
+            this.#learningPaths.push(newLp);
+        } else {
+            console.log("Alguno de los LPs no es una instancia del prototipo LearningPath");
         }
     }
+
+    setterCall(learningPaths) {
+        this.#learningPaths = [];
+        for (let i in learningPaths) {
+            this.learningPaths = learningPaths[i];
+        }
+        return this.#learningPaths;
+    }
+
     get() {
         return this.#name;
     }
@@ -110,7 +113,6 @@ class Student {
             console.warn("El curso ya ha sido agregado");
         }
     }
-
 }
 const escuelaWeb = new LearningPath({ name: "Escuela de WebDev" });
 const escuelaData = new LearningPath({ name: "Escuela de Data Science" });
@@ -118,11 +120,7 @@ const juan = new Student({
     email: "juanito@example.com",
     name: "Juanito",
     learningPaths: [
-        escuelaWeb,
         escuelaData,
-        {
-            name: "Escuela impostora"
-        }
-    ],
-
+        escuelaWeb,
+    ]
 });
